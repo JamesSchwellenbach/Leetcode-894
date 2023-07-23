@@ -1,0 +1,36 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution: #beats 83.81% runtime, 75.94% Memory 
+    def allPossibleFBT(self, n: int) -> List[Optional[TreeNode]]:
+        
+        @cache
+        def helper(n):
+            if n%2 == 0:
+                return []
+            elif n == 1:
+                return [TreeNode(0)]
+            elif n == 3:
+                ret = TreeNode(0)
+                ret.right = TreeNode(0)
+                ret.left = TreeNode(0)
+                return [ret]
+            else: #n = 5,7,9,11,13,15,
+                i = 1
+                ret = []
+                while i < n:
+                    j = n - i -1
+                    lefts = helper(i)
+                    rights = helper(j)
+                    for left in lefts:
+                        for right in rights:
+                            curr = TreeNode(0)
+                            curr.left = left
+                            curr.right = right
+                            ret.append(curr)
+                    i += 2
+                return ret
+        return helper(n)
